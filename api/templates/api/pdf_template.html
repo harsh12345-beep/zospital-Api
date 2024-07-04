@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="{% static 'api/css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1;
+            overflow: hidden; /* Hide overflow to manage page breaks */
+            position: relative; /* Ensure relative positioning for absolute elements */
+        }
+        .header {
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+        }
+        .image-row {
+            display: flex;
+            justify-content: space-between; /* Distribute space between images */
+            align-items: center; /* Align items vertically */
+             /* Added top and bottom margins */
+             margin:10%;
+            margin-top: -150px; /* Space between header and images */
+            margin-bottom: 60px;
+        }
+        .img1, .img2 {
+            /* Take up equal space */
+             margin-right:15%; 
+
+            } 
+        
+       
+
+
+        .img3 {
+            flex: 3; /* Do not grow */
+            width: 90px; /* Fixed width */
+            height: 30px; /* Fixed height */
+            width: auto;
+            margin-left: 200px; /* Push the third image to the right */
+        }
+        .patient-details {
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px; /* Increased left margin */
+            margin-right: 20px; /* Increased right margin */
+            margin-bottom: 20px; /* Added bottom margin */
+        }
+        .patient-details .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+        patiendfield{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+}
+        .agefield, .namefield {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .blue_line {
+            border: 1px solid #004185;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .doctor-section {
+            margin-top: 10px;
+            display: flex;
+            position: relative; 
+              
+        }
+
+        .doctor-section .left, .doctor-section .right {
+            padding: 20px;
+            
+        }
+        .doctor-section .left {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+        }
+        .doctor-section .right {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+        }
+        .doctor-section .separator {
+    width: 0;
+    border-left: 2px dotted maroon;
+    margin: 0 20px;
+    
+}
+        .doctor-section .field {
+            color: #004185;
+        }
+        .doctor-section .data {
+            background-color: white;
+            margin-bottom: 74px; /* Default margin between data fields */
+        }
+        footer {
+            background-color: #3FC1BE;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            height: 40px;
+            box-sizing: border-box;
+            bottom: 0;
+            position: relative;
+            width: 100%;
+            margin-top:20px; /* Added margin from elements above */
+        }
+        @page {
+            margin: 0;
+            size: auto;
+              /* auto is the initial value */
+            footer: html_footer; /* Add footer template */
+        }
+        .page-break {
+            page-break-before: always; /* Ensure page breaks before new sections */
+        }
+    </style>
+</head>
+<body>
+    <header class="header" style="background-image: url('{% static 'header.jpg' %}')">
+        <img src="{% static 'header.jpg' %}" alt="Header Image" class="print-header" style="width:100vw;">
+    </header>
+    <div class="image-row">
+        <img src="{% static 'drimage.png' %}" alt="Image 1" class="img1">
+        <img src="{% static 'drname.png' %}" alt="Image 2" class="img2" >
+        <img src="{% static 'logo.png' %}" alt="Image 3" class="img3" style="margin-left: 140px;">
+    </div>
+    <main>
+        <div class="patient-details">
+            <div class="patientfield">
+                <div class="row">
+                    <div class="field">Patient ID: {{ patient_id }}</div>
+                    <div class="field" id="date">Date: {{ date }}</div>
+                </div>
+            </div>
+            <div class="row namefield">
+                <div class="field" id="name">Name: {{ name }}</div>
+                <div class="field" id="address">Address: {{ address }}</div>
+                <div class="field" id="contact">Contact: {{ contact }}</div>
+            </div>
+            <div class="row agefield">
+                <div class="field" id="age">Age: {{ age }}</div>
+                <div class="field" id="sex">Sex: {{ sex }}</div>
+                <div class="field" id="height">Height: {{ height }}</div>
+                <div class="field" id="weight">Weight: {{ weight }}</div>
+                <div class="field" id="bp">BP: {{ bp }}</div>
+            </div>
+        </div>
+        <hr class="blue_line">
+        <div class="doctor-section">
+            <div class="left">
+                <div class="field">Investigation:</div>
+                <div class="data">{{ investigation }}</div>
+                <div class="field">Advice:</div>
+                <div class="data">{{ advice }}</div>
+            </div>
+            <div class="separator"></div> <!-- Adjusted position based on left column width -->
+            <div class="right">
+                <div class="field">Chief Complaints:</div>
+                <div class="data">{{ chief_complaints }}</div>
+                <div class="field">Examination findings:</div>
+                <div class="data">{{ examination_findings }}</div>
+                <div class="field">Diagnosis:</div>
+                <div class="data">{{ diagnosis }}</div>
+                <div class="field">Treatment Plan:</div>
+                <div class="data">{{ treatment_plan }}</div>
+                <div class="field">Medications:</div>
+                <div class="data">{{ medications }}</div>
+                <div class="field next-visit-date">Next Visit Date: {{ next_date }}</div> <!-- Updated field class -->
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div>{{ footer_address }}</div>
+        <div>www.drrichagangwar.com</div>
+    </footer>
+    <script>
+        
+    </script>
+</body>
+</html>

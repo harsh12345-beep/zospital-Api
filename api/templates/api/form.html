@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prescription Pad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+        .form-group input[type="submit"] {
+            width: auto;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Prescription Pad</h2>
+        <form id="pdfForm" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="patient_id">Patient ID:</label>
+                <input type="text" id="patient_id" name="patient_id">
+            </div>
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address">
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact:</label>
+                <input type="text" id="contact" name="contact">
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="text" id="age" name="age">
+            </div>
+            <div class="form-group">
+                <label for="sex">Sex:</label>
+                <input type="text" id="sex" name="sex">
+            </div>
+            <div class="form-group">
+                <label for="height">Height:</label>
+                <input type="text" id="height" name="height">
+            </div>
+            <div class="form-group">
+                <label for="bp">BP:</label>
+                <input type="text" id="bp" name="bp">
+            </div>
+            <div class="form-group">
+                <label for="weight">Weight:</label>
+                <input type="text" id="weight" name="weight">
+            </div>
+            <div class="form-group">
+                <label for="chief_complaints">Chief Complaints:</label>
+                <input type="text" id="chief_complaints" name="chief_complaints">
+            </div>
+            <div class="form-group">
+                <label for="examination_findings">Examination Findings:</label>
+                <input type="text" id="examination_findings" name="examination_findings">
+            </div>
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis:</label>
+                <input type="text" id="diagnosis" name="diagnosis">
+            </div>
+            <div class="form-group">
+                <label for="investigation">Investigation:</label>
+                <input type="text" id="investigation" name="investigation">
+            </div>
+            <div class="form-group">
+                <label for="advice">Advice:</label>
+                <input type="text" id="advice" name="advice">
+            </div>
+            <div class="form-group">
+                <label for="treatment_plan">Treatment Plan:</label>
+                <input type="text" id="treatment_plan" name="treatment_plan">
+            </div>
+            <div class="form-group">
+                <label for="medications">Medications:</label>
+                <textarea id="medications" name="medications"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="next_visit_date">Next Visit Date:</label>
+                <input type="date" id="next_visit_date" name="next_date">
+            </div>
+            <div class="form-group">
+                <label for="footer_address">Footer Address:</label>
+                <input type="text" id="footer_address" name="footer_address">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Generate PDF">
+            </div>
+        </form>
+    </div>
+
+<script>
+document.getElementById('pdfForm').onsubmit = function(event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+    var data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    fetch('/api/create_pdf/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const patientName = data['name']; // Assuming 'name' is the field for patient name
+        a.href = url;
+        a.download = `${patientName}_Prescription.pdf`; // Customize the filename here
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error:', error));
+
+    };
+</script>
+</body>
+</html>

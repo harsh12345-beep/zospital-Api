@@ -1,0 +1,22 @@
+from rest_framework import serializers
+
+class PDFDataSerializer(serializers.Serializer):
+    patient_id = serializers.CharField(max_length=100)
+    date = serializers.DateField()
+    name = serializers.CharField(max_length=100)
+    address = serializers.CharField(max_length=255)
+    contact = serializers.CharField(max_length=15)
+    age = serializers.IntegerField()
+    sex = serializers.CharField(max_length=10)
+    height = serializers.CharField(max_length=10)
+    weight = serializers.CharField(max_length=10)
+    bp = serializers.CharField(max_length=10)
+    investigation = serializers.CharField(max_length=5000)
+    advice = serializers.CharField(max_length=5000)
+    chief_complaints = serializers.CharField(max_length=255)
+    examination_findings = serializers.CharField(max_length=5000)
+    diagnosis = serializers.CharField(max_length=5000)
+    treatment_plan = serializers.CharField(max_length=5000)
+    medications = serializers.CharField(max_length=5000)
+    next_date = serializers.DateField()
+    footer_address = serializers.CharField(max_length=35)
